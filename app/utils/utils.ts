@@ -34,7 +34,7 @@ export const getMessageProgress = (percent: number, total: number) => {
     config.title = "¡Buen inicio! 💪";
     config.message = "Ya avanzaste, sigue constante y verás resultados pronto.";
   } else if (percent > 50 && percent <= 80) {
-    config.color = "yellow";
+    config.color = "primary";
     config.title = "¡Más de la mitad! 😎";
     config.message =
       "Estás avanzando muy bien, mantén el ritmo que ya casi llegas.";

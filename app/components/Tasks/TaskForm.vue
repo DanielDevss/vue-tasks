@@ -38,7 +38,7 @@ const form = ref({
     <v-row>
       <v-col>
         <v-text-field v-model="form.tags" name="tags" label="Etiquetas"
-          placeholder="Ej.: #house #school"></v-text-field>
+          placeholder="Ej.: Escuela, Examen"></v-text-field>
       </v-col>
       <v-col>
         <v-text-field v-model="form.due_date" type="date" label="Fecha de vencimiento" name="due_date"></v-text-field>
