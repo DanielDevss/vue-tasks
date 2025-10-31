@@ -18,7 +18,7 @@ const tabs = [
   <!-- Header -->
 
   <v-row>
-    <v-col>
+    <v-col cols="12" md="6">
       <header>
 
         <h1>Lista de tareas</h1>

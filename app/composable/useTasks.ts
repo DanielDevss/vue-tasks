@@ -1,6 +1,7 @@
 import { service } from "~/services/taskServices";
 import { caculatePercent, getMessageProgress } from "~/utils/utils";
 import type { Task } from "~/types";
+import { toast } from "vuetify-sonner";
 
 const useTasks = () => {
   const loading = ref(true);
@@ -23,18 +24,24 @@ const useTasks = () => {
     try {
       await service.toggleTask(id);
       await fetchTasks();
+      toast.success("El estado de la tarea cambio");
     } catch (error) {
-      alert("Ha ocurrido un error");
+      toast.error("Ocurrio un error");
     }
   };
 
   // region Eliminar tarea
   const deleteTask = async (id: number) => {
     if (id) {
-      loadingAction.value = true;
-      await service.deleteTask(id);
-      loadingAction.value = false;
-      fetchTasks();
+      try {
+        loadingAction.value = true;
+        await service.deleteTask(id);
+        loadingAction.value = false;
+        toast.success("Tarea eliminada correctamente");
+        fetchTasks();
+      } catch (error) {
+        toast.error("Ocurrio un error al eliminar");
+      }
     }
   };
 

@@ -4,6 +4,7 @@ import type { TaskDetail } from "~/types";
 const useTaskDetail = () => {
   const route = useRoute();
   const id = route.params.id;
+
   const task = ref<TaskDetail | null>(null);
   const loading = ref(true);
 
@@ -23,7 +24,12 @@ const useTaskDetail = () => {
     }
   };
 
-  onMounted(() => fetchData());
+  onMounted(() => {
+    if (!id) {
+      navigateTo("/");
+    }
+    fetchData();
+  });
 
   return { loading, task, id };
 };
