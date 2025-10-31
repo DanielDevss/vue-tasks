@@ -26,7 +26,7 @@ const { username, changeUsername } = useSession()
         </div>
       </template>
       <template v-slot:actions>
-        <v-btn text="Cancelar"></v-btn>
+        <v-btn text="Cancelar" @click="dialog = false"></v-btn>
         <v-btn text="Cambiar" @click="changeUsername" variant="flat" color="primary"></v-btn>
       </template>
     </v-card>
