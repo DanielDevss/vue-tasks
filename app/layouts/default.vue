@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VSonner } from "vuetify-sonner";
 import Navbar from "~/components/navigation/Navbar.vue";
 </script>
 
@@ -11,7 +12,7 @@ import Navbar from "~/components/navigation/Navbar.vue";
       </v-container>
     </v-main>
   </v-app>
+  <VSonner position="top-right" expand />
 </template>
 
-<style>
-</style>
+<style></style>

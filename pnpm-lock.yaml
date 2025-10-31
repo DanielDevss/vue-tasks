@@ -20,6 +20,9 @@ importers:
       vue-router:
         specifier: ^4.6.3
         version: 4.6.3(vue@3.5.22)
+      vuetify-sonner:
+        specifier: ^0.3.21
+        version: 0.3.21(vue@3.5.22)(vuetify@3.10.8)
     devDependencies:
       vite-plugin-vuetify:
         specifier: ^2.1.2
@@ -3068,6 +3071,9 @@ packages:
   vue-bundle-renderer@2.2.0:
     resolution: {integrity: sha512-sz/0WEdYH1KfaOm0XaBmRZOWgYTEvUDt6yPYaUzl4E52qzgWLlknaPPTTZmp6benaPTlQAI/hN1x3tAzZygycg==}
 
+  vue-component-type-helpers@2.2.12:
+    resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
+
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
 
@@ -3076,6 +3082,9 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
+  vue-sonner@1.3.2:
+    resolution: {integrity: sha512-UbZ48E9VIya3ToiRHAZUbodKute/z/M1iT8/3fU8zEbwBRE11AKuHikssv18LMk2gTTr6eMQT4qf6JoLHWuj/A==}
+
   vue@3.5.22:
     resolution: {integrity: sha512-toaZjQ3a/G/mYaLSbV+QsQhIdMo9x5rrqIpYRObsJ6T/J+RyCSFwN2LHNVH9v8uIcljDNa3QzPVdv3Y6b9hAJQ==}
     peerDependencies:
@@ -3083,6 +3092,12 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  vuetify-sonner@0.3.21:
+    resolution: {integrity: sha512-sAAPReHNqZf9ish2JmFYDbp0E8UQLLqcTJ1Cvm6u75Lom0/Yg9NQf8CU32yYlnQq6pYpk0rGJNZADPYmyT3/vg==}
+    peerDependencies:
+      vue: ^3.3.0
+      vuetify: ^3.3.0
 
   vuetify@3.10.8:
     resolution: {integrity: sha512-TV1bx8mUjOPbhmEsamm38/CBcVe5DHYepOZGE6aQJ2uxvg96B4k+QHgIJcD5uKVfKmxKkJRtHdEXyq6JP9wBtg==}
@@ -6527,12 +6542,16 @@ snapshots:
     dependencies:
       ufo: 1.6.1
 
+  vue-component-type-helpers@2.2.12: {}
+
   vue-devtools-stub@0.1.0: {}
 
   vue-router@4.6.3(vue@3.5.22):
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.22
+
+  vue-sonner@1.3.2: {}
 
   vue@3.5.22:
     dependencies:
@@ -6541,6 +6560,13 @@ snapshots:
       '@vue/runtime-dom': 3.5.22
       '@vue/server-renderer': 3.5.22(vue@3.5.22)
       '@vue/shared': 3.5.22
+
+  vuetify-sonner@0.3.21(vue@3.5.22)(vuetify@3.10.8):
+    dependencies:
+      vue: 3.5.22
+      vue-component-type-helpers: 2.2.12
+      vue-sonner: 1.3.2
+      vuetify: 3.10.8(vite-plugin-vuetify@2.1.2)(vue@3.5.22)
 
   vuetify@3.10.8(vite-plugin-vuetify@2.1.2)(vue@3.5.22):
     dependencies:

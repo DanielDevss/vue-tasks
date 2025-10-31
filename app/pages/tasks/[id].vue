@@ -1,49 +1,96 @@
 <script setup lang="ts">
-import type { TaskDetail } from '~/types'
-
-const route = useRoute()
-const id = route.params.id
-const {data, pending} = useFetch(`https://ecsdevapi.nextline.mx/vdev/tasks-challenge/tasks/${id}?token=daniel09`, {
-  headers: {
-        Authorization: `Bearer e864a0c9eda63181d7d65bc73e61e3dc6b74ef9b82f7049f1fc7d9fc8f29706025bd271d1ee1822b15d654a84e1a0997b973a46f923cc9977b3fcbb064179ecd`
-    }
-})
+import useTaskDetail from '~/composable/useTaskDetail';
+const { task, loading } = useTaskDetail()
 </script>
 
 <template>
-  <v-card>
-    <v-card-title>Titulo de la tarea</v-card-title>
-    <v-card-subtitle>La tarea esta completa</v-card-subtitle>
-    <v-container>
-      <ul>
-        <v-chip>Working</v-chip>
-        <v-chip>Activited</v-chip>
-        <v-chip>School</v-chip>
-      </ul>
-      <div class="mt-6">
-        <h2>Detalles de la tarea</h2>
-        <x-card-text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum dolorem possimus natus, quod sunt
-          ea dicta pariatur mollitia nulla aut quos deserunt, at asperiores vitae illum doloremque fugit corrupti
-          ipsa!</x-card-text>
-      </div>
-    </v-container>
-    <v-card-actions>
-      <v-btn text="Marcar completa">
-      </v-btn>
-      <v-btn text="Editar">
-      </v-btn>
-      <v-btn text="Eliminar">
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+  <v-container max-width="768">
+    <div v-if="loading">
+      Cargando...
+    </div>
 
-  <v-card class="mt-5">
-    <v-card-title>Comentarios</v-card-title>
-    <v-container>
-      <v-textarea placeholder="Escribe tus comentarios"></v-textarea>
-    </v-container class="py-0!">
-    <v-card-actions>
-      <v-btn variant="flat" color="primary" append-icon="mdi-sync">Guardar</v-btn>
-    </v-card-actions>
-  </v-card>
+    <div v-else-if="!loading && !task">
+      <h1>Not found</h1>
+    </div>
+
+    <article class="task" v-else-if="!loading && task">
+      <header>
+        <!-- Header -->
+        <h1>Detalle de Tarea</h1>
+        <p>{{ task.due_date ? task.due_date : "No hay fecha de cierre" }}</p>
+
+        <v-divider class="my-2" />
+      </header>
+      <!-- Información principal -->
+      <section>
+        <!-- Información tarea -->
+        <v-card variant="flat" density="compact" :title="task.title ?? 'Sin titulo'"
+          :append-icon="task.is_completed ? 'mdi-check-circle-outline' : 'mdi-clock-outline'">
+          <!-- Descripcion -->
+          <v-card-text>{{ task.description.length > 0 ? task.description : "Sin descripción" }}</v-card-text>
+          <!-- Comentarios -->
+          <v-card-text>
+            <h2 class="text-h6">Comentarios:</h2>
+            <p>{{ task.comments.length > 0 ? task.comments : "Sin Comentarios" }}</p>
+          </v-card-text>
+          <!-- Tags -->
+          <v-card-item>
+            <v-chip-group>
+              <v-chip density="compact" v-for="tag in task.tags.trim().split(',')" :text="tag"></v-chip>
+            </v-chip-group>
+          </v-card-item>
+        </v-card>
+      </section>
+      <!-- Información secundaria -->
+      <aside>
+        <v-card variant="tonal">
+          <v-card-item>
+            <ul>
+              <li v-if="task.due_date">
+                <p><strong>Finaliza el:</strong><br>{{ task.due_date }}</p>
+              </li>
+              <li>
+                <p><strong>Tarea creada el:</strong><br>{{ task.created_at }}</p>
+              </li>
+              <li>
+                <p><strong>Tarea edita el:</strong><br>{{ task.updated_at }}</p>
+              </li>
+            </ul>
+          </v-card-item>
+        </v-card>
+      </aside>
+    </article>
+  </v-container>
+
 </template>
+
+
+<style>
+.task {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width:668px) {
+  .task {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: auto 250px;
+    grid-template-areas: "header header" "section aside";
+  }
+}
+
+
+.task header {
+  grid-area: header;
+}
+
+.task section {
+  grid-area: section;
+}
+
+.task aside {
+  grid-area: aside;
+}
+</style>

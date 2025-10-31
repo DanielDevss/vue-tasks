@@ -1,26 +1,17 @@
 <script setup lang="ts">
 import useTasks from "~/composable/useTasks";
-const { fetchTasks, pending, tasks } = useTasks()
+const { loading, loadingAction, allTasks, pendingTasks, completeTasks, progressMessage, percentProgress, percentProgressLabel, deleteTask, toggleTask } = useTasks()
 
-// TODO: VER POR QUE FALLA TASKS
-
-const currentTab = ref("Pendientes");
-
-const getTasksByTab = (tabValue: string) => {
-  if (tabValue === 'pending') return tasks.value.filter(task => !task.is_completed);
-  if (tabValue === 'completed') return tasks.value.filter(task => task.is_completed);
-  return tasks.value;
-};
+const tab = ref("Pendientes");
+const search = ref();
 
 const tabs = [
-  { label: "Pendientes", icon: "mdi-clock-outline", value: "pending" },
-  { label: "Completas", icon: "mdi-check-circle-outline", value: "completed" },
-  { label: "Todas", icon: "mdi-list-status", value: "all" },
+  { label: "Pendientes", icon: "mdi-clock-outline", value: "pending", tasks: pendingTasks },
+  { label: "Completas", icon: "mdi-check-circle-outline", value: "completed", tasks: completeTasks },
+  { label: "Todas", icon: "mdi-list-status", value: "all", tasks: allTasks },
 ];
 
-onUnmounted(() => {
-  fetchTasks()
-})
+
 </script>
 
 <template>
@@ -33,11 +24,11 @@ onUnmounted(() => {
         <h1>Lista de tareas</h1>
 
         <v-text-field type="search" variant="outlined" density="comfortable" clearable label="Buscar tarea"
-          prepend-inner-icon="mdi-magnify" placeholder="Buscar . . ."></v-text-field>
+          prepend-inner-icon="mdi-magnify" placeholder="Buscar . . ." v-model="search"></v-text-field>
 
         <!-- Marcadores Tabs -->
 
-        <v-tabs v-model="currentTab">
+        <v-tabs v-model="tab">
           <v-tab v-for="tab in tabs" :text="tab.label" :value="tab.value" :prepend-icon="tab.icon">
           </v-tab>
         </v-tabs>
@@ -47,19 +38,24 @@ onUnmounted(() => {
 
       <!-- Tareas -->
 
-      <section v-if="status !== 'pending'">
-        <v-tabs-window v-model="currentTab">
+      <section v-if="!loading">
+        <v-tabs-window v-model="tab">
           <v-tabs-window-item v-for="tab in tabs" :value="tab.value">
-            <tasks :tasks="getTasksByTab(tab.value)" />
+            <!-- Lista de tereas -->
+            <tasks :toggle-task="toggleTask" :delete-task="deleteTask" :loading-action="loadingAction"
+              :tasks="tab.tasks.value" :search="search" />
+
           </v-tabs-window-item>
         </v-tabs-window>
       </section>
       <section v-else>
-        <v-spinner />
+        Cargando...
       </section>
     </v-col>
     <v-col>
-      <TasksProgressCard :tasks="allTasks" />
+      <TasksProgressCard :total-pending="pendingTasks.length" :total-complete="completeTasks.length"
+        :total-all="allTasks.length" :progress="percentProgress" :progress-label="percentProgressLabel!"
+        :progress-message="progressMessage" />
     </v-col>
   </v-row>
 
