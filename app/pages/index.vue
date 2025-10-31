@@ -1,65 +1,73 @@
 <script setup lang="ts">
-import type { Task } from '~/types';
+import useTasks from "~/composable/useTasks";
+const { fetchTasks, pending, tasks } = useTasks()
 
-const dialog = ref()
+// TODO: VER POR QUE FALLA TASKS
 
-const { data } = useFetch(`https://ecsdevapi.nextline.mx/vdev/tasks-challenge/tasks?token=daniel09`, {
-    headers: {
-        Authorization: `Bearer e864a0c9eda63181d7d65bc73e61e3dc6b74ef9b82f7049f1fc7d9fc8f29706025bd271d1ee1822b15d654a84e1a0997b973a46f923cc9977b3fcbb064179ecd`
-    }
+const currentTab = ref("Pendientes");
+
+const getTasksByTab = (tabValue: string) => {
+  if (tabValue === 'pending') return tasks.value.filter(task => !task.is_completed);
+  if (tabValue === 'completed') return tasks.value.filter(task => task.is_completed);
+  return tasks.value;
+};
+
+const tabs = [
+  { label: "Pendientes", icon: "mdi-clock-outline", value: "pending" },
+  { label: "Completas", icon: "mdi-check-circle-outline", value: "completed" },
+  { label: "Todas", icon: "mdi-list-status", value: "all" },
+];
+
+onUnmounted(() => {
+  fetchTasks()
 })
-
-const deleteTask = () => { }
 </script>
 
 <template>
+  <!-- Header -->
 
-    <v-sheet>
-        <v-btn-group>
-            <v-btn prepend-icon="mdi-clock-outline">Pendientes</v-btn>
-            <v-btn prepend-icon="mdi-check-circle-outline">Completas</v-btn>
-            <v-btn prepend-icon="mdi-list-status">Todas</v-btn>
-        </v-btn-group>
-    </v-sheet>
+  <v-row>
+    <v-col>
+      <header>
 
-    <tasks :tasks="data as Task[] ?? []" />
+        <h1>Lista de tareas</h1>
 
-    <v-fab app elevation="2" color="primary" :layout="true" icon="mdi-plus" @click="dialog = true" />
+        <v-text-field type="search" variant="outlined" density="comfortable" clearable label="Buscar tarea"
+          prepend-inner-icon="mdi-magnify" placeholder="Buscar . . ."></v-text-field>
 
-    <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-            <v-card-title>Nueva tarea</v-card-title>
-            <v-container>
+        <!-- Marcadores Tabs -->
 
-                <v-text-field label="Titulo de la tarea" placeholder="Escribe el nombre de la tarea"
-                    required></v-text-field>
+        <v-tabs v-model="currentTab">
+          <v-tab v-for="tab in tabs" :text="tab.label" :value="tab.value" :prepend-icon="tab.icon">
+          </v-tab>
+        </v-tabs>
+      </header>
 
-                <v-row>
-                    <v-col>
-                        <v-text-field label="Etiquetas" placeholder="Ej.: #house #school"></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-text-field type="date" label="Fecha de vencimiento" name="due-date"
-                            placeholder="Escribe tus etiquetas con #"></v-text-field>
-                    </v-col>
-                </v-row>
+      <v-divider class="mb-2" />
 
-                <v-textarea label="¿De que es tu terea?" placeholder="Escribe o describe la tarea."
-                    required></v-textarea>
+      <!-- Tareas -->
 
-                <v-textarea label="Comentarios" placeholder="Escribe tus comentarios"
-                    prepend-icon="mdi-message-reply-text"></v-textarea>
+      <section v-if="status !== 'pending'">
+        <v-tabs-window v-model="currentTab">
+          <v-tabs-window-item v-for="tab in tabs" :value="tab.value">
+            <tasks :tasks="getTasksByTab(tab.value)" />
+          </v-tabs-window-item>
+        </v-tabs-window>
+      </section>
+      <section v-else>
+        <v-spinner />
+      </section>
+    </v-col>
+    <v-col>
+      <TasksProgressCard :tasks="allTasks" />
+    </v-col>
+  </v-row>
 
-                <v-card-actions>
-                    <v-btn @click="dialog = false" type="button" variant="tonal" text="Cerrar"
-                        append-icon="mdi-close" />
-                    <v-btn color="primary" variant="flat" type="submit" text="Guardar tarea"
-                        append-icon="mdi-plus"></v-btn>
-                </v-card-actions>
-            </v-container>
-        </v-card>
-    </v-dialog>
+  <!-- Botton: Crear Tarea -->
 
+  <v-fab app elevation="2" color="primary" :layout="true" icon="mdi-plus" to="/tasks/create" />
+
+  <!-- Ventana: Formulario -->
 </template>
 
 <style></style>
