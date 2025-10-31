@@ -1,75 +1,21 @@
-# Nuxt Minimal Starter
+# Sistema Task List
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Este sistema esta desarrrollado en Vue, Vuetify, Nuxt. Los 3 en su versión 3.
+Tienes que tener instalado Nodejs y de preferencia PNPM. Puedes acceder a una DEMO del proyecto en la siguiente liga:
 
-## Setup
+[Click para ver demo](https://vue-tasks-two.vercel.app/)
 
-Make sure to install dependencies:
+## Variables de entorno:
 
-```bash
-# npm
-npm install
+Este sistema necesita de 2 variables de entorno. El API Rest y Bearer Token:
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+```
+VITE_BEARER_TOKEN=[TOKEN]
+VITE_URI_BASE=[API]
 ```
 
-## Development Server
+Con solo estos valores ya podemos correr el sistema en tu equipo usando
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+pnpm run dev
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
