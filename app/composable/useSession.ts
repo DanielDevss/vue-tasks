@@ -1,4 +1,3 @@
-// composables/useSession.ts
 export const useSession = () => {
   const username = ref<string>("daniel09");
 
